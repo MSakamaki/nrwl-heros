@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "format": "prettier --single-quote --print-width 120 --write \"{apps,libs}/**/*.ts\"",
-    "dev.start": "npm run doc.start && npm run mock.start && npm run chrome.start",
+    "dev.start": "npm run doc && npm run doc.start && npm run mock.start && npm run chrome.start",
     "mock.start": "./node_modules/.bin/pm2 start npm --name=\"mock\" -- run mock.start.dev",
     "mock.start.dev": "./node_modules/.bin/ts-node mock/mockAPI/index.ts",
     "mock.stop": "./node_modules/.bin/pm2 stop mock",
