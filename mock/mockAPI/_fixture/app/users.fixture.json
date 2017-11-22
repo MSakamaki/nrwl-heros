@@ -1,0 +1,8 @@
+{
+  "API_KEY": "users",
+  "API_NAME": "ユーザーデータ",
+  "data": [
+    { "id": 1, "name":"Alice" },
+    { "id": 2, "name":"Bob" }
+  ]
+}

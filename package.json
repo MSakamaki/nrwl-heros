@@ -9,7 +9,14 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "format": "prettier --single-quote --print-width 120 --write \"{apps,libs}/**/*.ts\""
+    "format": "prettier --single-quote --print-width 120 --write \"{apps,libs}/**/*.ts\"",
+    "dev.start": "npm run mock.start && npm run chrome.start",
+    "mock.start": "./node_modules/.bin/pm2 start npm --name=\"mock\" -- run mock.start.dev",
+    "mock.start.dev": "./node_modules/.bin/ts-node mock/mockAPI/index.ts",
+    "mock.stop": "./node_modules/.bin/pm2 stop mock",
+    "chrome.start": "rm -fr /tmp/angular-seed-c && ./node_modules/.bin/pm2 start /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --name=\"chrome\" --  --user-data-dir=/tmp/angular-seed-c --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:5555",
+    "chrome.stop": "./node_modules/.bin/pm2 stop chrome",
+    "pm2.kill": "./node_modules/.bin/pm2 kill"
   },
   "private": true,
   "dependencies": {
@@ -34,11 +41,12 @@
   "devDependencies": {
     "@angular/cli": "nrwl/fix-cli-build",
     "@angular/compiler-cli": "5.0.0",
-    "@nrwl/schematics": "0.2.1",
     "@angular/language-service": "5.0.0",
+    "@nrwl/schematics": "0.2.1",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
+    "browser-sync": "^2.18.13",
     "codelyzer": "~3.1.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
@@ -48,10 +56,11 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "pm2": "^2.7.2",
+    "prettier": "1.7.4",
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
-    "typescript": "2.5.3",
-    "prettier": "1.7.4"
+    "typescript": "2.5.3"
   }
 }
