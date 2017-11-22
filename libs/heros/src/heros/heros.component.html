@@ -1,0 +1,10 @@
+<p>
+  人物一覧
+</p>
+<button (click)="onNewHelo()">新規登録</button>
+<ul>
+  <li *ngFor="let hero of heros$ | async">{{hero.name}}
+   <button (click)="onClick(hero)">編集</button>
+    <button (click)="onDelete(hero.id)">  削除</button>
+  </li>
+</ul>

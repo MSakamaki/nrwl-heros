@@ -4,7 +4,51 @@
     "name": "nrwl-sample",
     "npmScope": "nrwl-sample"
   },
-  "apps": [],
+  "apps": [
+    {
+      "name": "client",
+      "root": "apps/client/src",
+      "outDir": "dist/apps/client",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "../../../test.js",
+      "tsconfig": "../../../tsconfig.app.json",
+      "testTsconfig": "../../../tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "hero-detail",
+      "root": "libs/hero-detail/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
+      "name": "hero-list",
+      "root": "libs/hero-list/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    },
+    {
+      "name": "heros",
+      "root": "libs/heros/src",
+      "test": "../../../test.js",
+      "appRoot": ""
+    }
+  ],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"
@@ -30,7 +74,10 @@
     "schematics": {
       "collection": "@nrwl/schematics",
       "postGenerate": "npm run format",
-      "newProject": ["app", "lib"]
+      "newProject": [
+        "app",
+        "lib"
+      ]
     },
     "styleExt": "css",
     "component": {}

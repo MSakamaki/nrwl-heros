@@ -1,0 +1,12 @@
+<div *ngIf="editing$ | async">
+  <p>
+    名前を変えたり、新しく追加できたり
+  </p>
+
+  <label>Name:
+    <input type="text" [value]="name$ | async" #heroName>
+  </label>
+
+  <button *ngIf="!(new$ | async)" (click)="onEditComplite(heroName.value)">更新</button>
+  <button (click)="onAdd(heroName.value)">追加</button>
+</div>
