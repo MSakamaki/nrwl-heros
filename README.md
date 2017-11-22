@@ -1,6 +1,2 @@
 ## nrwl example
 
-
-
-
-
