@@ -9,13 +9,12 @@ git clone git@github.com:MSakamaki/nrwl-heros.git
 cd nrwl-heros
 npm install
 
-
-# 資料を見る方法
-npm run doc       # 資料ビルド
-npm run doc.serve # 資料閲覧
-
 # 開発準備(APIサーバーとかキャッシュの無いchromeを立ち上げる)
-npm run mock.start
+npm run dev.start
+
+# 資料を見る方法(資料更新)
+npm run doc
+
 
 # 画面起動
 npm start
