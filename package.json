@@ -14,7 +14,7 @@
     "mock.start": "./node_modules/.bin/pm2 start npm --name=\"mock\" -- run mock.start.dev",
     "mock.start.dev": "./node_modules/.bin/ts-node mock/mockAPI/index.ts",
     "mock.stop": "./node_modules/.bin/pm2 stop mock",
-    "chrome.start": "rm -fr /tmp/angular-seed-c && ./node_modules/.bin/pm2 start /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --name=\"chrome\" --  --user-data-dir=/tmp/angular-seed-c --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:5555",
+    "chrome.start": "rm -fr /tmp/nrwl-sample && ./node_modules/.bin/pm2 start /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --name=\"chrome\" --  --user-data-dir=/tmp/nrwl-sample --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:5555",
     "chrome.stop": "./node_modules/.bin/pm2 stop chrome",
     "pm2.kill": "./node_modules/.bin/pm2 kill",
     "doc": "node_modules/.bin/compodoc -p  tsconfig.app.json --includesName --includes add-doc",

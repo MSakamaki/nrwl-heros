@@ -1,6 +1,20 @@
 [
   {
-    "title": "Herosハンズオン",
-    "file": "handson.md"
+    "title": "handson",
+    "file": "handson.md",
+    "children": [
+      {
+        "title": "edit",
+        "file": "edit.md"
+      },
+      {
+        "title": "create",
+        "file": "delete.md"
+      },
+      {
+        "title": "delete",
+        "file": "delete.md"
+      }
+    ]
   }
 ]
