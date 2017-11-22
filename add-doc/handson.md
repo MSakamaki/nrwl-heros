@@ -1,6 +1,8 @@
 ## nrwl example
 
 
+開発画面はモバイルViewだといい感じ
+
 ```sh
 
 # クライントを作成
@@ -31,100 +33,129 @@ angular 2 materialの導入について詳しくは[ここ](https://material.ang
 
 ### やること
 
-#### hero-listの編集
+#### UIコンポーネントの呼び出し
 
-`helo-list`の初期アクション(API)にAPI callを追加
-`import { HttpClientModule } from '@angular/common/http';`を追加
-`hero-list.interfaces.ts`の型定義(とりまAPIにあわせる)
-`hero-list.actions.ts`の定義
-`hero-list.effects.ts` に`httpClient.get()`でデータを取得する(戻り値はinterfaceの通り)
-`map()`で`DATA_LOADED`用データに変換する
-(ショートカット`rx-add-operator`で不足オペレーターを`hero-list.module.ts`へ追加)
-
-#### herosの編集とtopへの組み込み
+`HerosModule`と`HeroDetailModule`の対応コンポーネントをexportして、対応タグを`app.component.html`へ記述する。
 
 
-`HerosModule`をclientアプリに読ませる
-`herosComponent`を`export`する
-clientアプリに`app-heros`を書く
+```html
+<!-- app.component.html -->
+<app-heros></app-heros>
+<app-hero-detail></app-hero-detail>
+```
 
-`herosModule`に`HeroListModule`を読み込む
+#### ヒーロー一覧の表示
 
-`herosModule`に以下コードを追加し、モジュール初期化時にデータを読み込むようにする。
+初期処理でhero一覧を取得して、表示できるようにする。
+
+
 ```typescript
+// heros.module.ts
+// HeroListModuleをimportsして、LOAD_DATA Actionを行う
+
+@NgModule({
+  imports: [CommonModule, RouterModule, HeroListModule],
+  declarations: [HerosComponent],
+  exports: [HerosComponent]
+})
+export class HerosModule {
   constructor(private store: Store<HeroListState>) {
     this.store.dispatch({ type: 'LOAD_DATA' });
   }
-```
-(ここまで書くとchromeのNetworkにapiを叩いてるのがわかる)
-
-`heros.component.ts`に以下のようなコードを追加
-
-```typescript
-heros$;
-
-constructor(private store: Store<HeroListState>) {}
-
-ngOnInit() {
-  this.heros$ = this.store.select('heroList', 'heros');
 }
 ```
 
+##### hero-listを作る
 
-`a-ngFor`ショートカットでngforを追加( `<ul><li *ngFor="let hero of heros$ | async">{{hero.name}}</li></ul>`)
+```typescript
 
-#### hero詳細との連携
+// hero-list.module.ts
+// heroListMOduleにHttpClientModuleをimportする
+import { HttpClientModule } from '@angular/common/http';
 
-herosと同じようにclientアプリにコンポーネントを読み込む、以下のように実装。
+// hero-list.interfaces.ts
+export interface HeroList {
+  // define state here
+  heros: Hero[];
+}
+
+export interface Hero {
+  id: number;
+  name: string;
+}
+
+// hero-list.init.ts
+export const heroListInitialState: HeroList = {
+  heros: []
+};
+
+// hero-list.actions.ts
+export interface LoadData {
+  type: 'LOAD_DATA';
+  payload: {};
+}
+
+export interface DataLoaded {
+  type: 'DATA_LOADED';
+  payload: {
+    heros: Hero[];
+  };
+}
+
+// hero-list.effects.ts
+  @Effect()
+  loadData = this.d.fetch('LOAD_DATA', {
+    run: (a: LoadData, state: HeroListState) => {
+      /** NEW
+       *  mapが無いと言われるので、rx-add-operatorsショートカットでimportする。
+       * **/
+      return this.http.get('api/users').map(heros => ({
+        type: 'DATA_LOADED',
+        payload: {
+          heros: heros
+        }
+      }));
+    },
+
+    onError: (a: LoadData, error) => {
+      console.error('Error', error);
+    }
+  });
+
+```
+
+データの取得ができるようになったのでchrome開発ツールのnetworkを見てapiをよんでるか確認する。
+
+##### リストをherosに表示する
+
+
+```typescript
+// heros.component.ts
+export class HerosComponent implements OnInit {
+
+ // rx-observable で追加が楽
+  heros$: Observable<Hero[]>;
+
+  constructor(private heloList: Store<HeroListState>) {}
+
+  ngOnInit() {
+    this.heros$ = this.heloList.select('heroList', 'heros');
+  }
+}
+```
 
 ```html
-<div>
-  <p>
-    名前を変えたり、新しく追加できたりする
-  </p>
-
-  <label>Name:
-    <input type="text">
-  </label>
-
-  <button (click)="onEditComplite(heroName.value)">更新</button>
-  <button (click)="onAdd(heroName.value)">追加</button>
-</div>
-
+<!-- pure html -->
+<ul>
+  <li *ngFor="let hero of heros$ | async">{{hero.name}}</li>
+</ul>
+<!-- material -->
+<mat-list>
+  <!-- `a-ngFor`ショートカットでngforの追加が楽 -->
+  <mat-list-item *ngFor="let hero of heros$ | async">{{hero.name}}</mat-list-item>
+</mat-list>
 ```
 
-```typescript
-export class HeroDetailComponent implements OnInit {
+APIから取得したデータが画面に表示される
 
-  name$: Observable<string>
-  
-  constructor(private heroEditor: Store<HeroEditorState>) {
-    this.name$ = this.heroEditor.select('heroEditor', 'name');
-  }
-
-  ngOnInit() {}
-
-  onEditComplite(name) {
-  }
-
-  onAdd(name) {
-  }
-}
-```
-
-
-# その他
-
-## おぼえがき
-
-強さの順は`interface > actions > effects = reducer = init`
-
-angular-cliで使用してる handlebarsのバージョンが1.5x系のためセキュリテイ脆弱性があるが、1.6.x１で修正されてるのでそのまま。
-
-# vscode plagtin
-
-https://marketplace.visualstudio.com/items?itemName=johnpapa.Angular2
-https://marketplace.visualstudio.com/items?itemName=Angular.ng-template
-https://marketplace.visualstudio.com/items?itemName=Mikael.Angular-BeastCode
-
-
+### [次(編集)へ](./handson/edit.html)

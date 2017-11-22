@@ -2,6 +2,18 @@
 
 ### 導入
 
+### VS Codeのインストール
+
+https://code.visualstudio.com/
+
+### VSコードのプラグイン
+
+https://marketplace.visualstudio.com/items?itemName=johnpapa.Angular2
+https://marketplace.visualstudio.com/items?itemName=Angular.ng-template
+https://marketplace.visualstudio.com/items?itemName=Mikael.Angular-BeastCode
+
+
+### コマンド
 
 ```sh
 # 初期設定
@@ -27,13 +39,12 @@ npm start
 
 
 ```sh
-###############
-# その他
-###############
+##############################
+#   開発が終わったら
+##############################
 
 # mock終了
 npm run pm2.kill
-
 
 ```
 
