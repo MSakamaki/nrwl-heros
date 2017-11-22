@@ -7,24 +7,39 @@ heloに編集ボタンを追加して名前を変更できるようにする
 `helos`モジュールの`heros.component.html`に編集ボタンを追加
 
 ```html
-<ul>
-  <li *ngFor="let hero of heros$ | async">{{hero.name}}
-    <button (click)="onClick(hero)">編集</button>
-  </li>
-</ul>
+<mat-list>
+  <h3 mat-subheader>Heros</h3>
+  <mat-list-item *ngFor="let hero of heros$ | async">
+    <button mat-raised-button (click)="onEdit(hero)" color="primary">編集</button>
+    <h4 mat-line>{{hero.name}}</h4>
+  </mat-list-item>
+</mat-list>
 ```
 
 ```typescript
-  onClick(helo: Hero) {
+
+export class HerosComponent implements OnInit {
+
+  heros$: Observable<Hero[]>;
+
+  constructor(private heloList: Store<HeroListState>, private heroEditor: Store<HeroEditorState>) { }
+
+  ngOnInit() {
+    this.heros$ = this.heloList.select('heroList', 'heros');
+  }
+
+  onEdit(helo: Hero) {
     this.heroEditor.dispatch({
       type: 'EDIT_START',
       payload: { id: helo.id, name: helo.name }
     });
   }
+}
 ```
 
 編集データのmodel(`HeroDetailModule`)を定義する。
 
+`HeroDetailModule`に`HeroListModule`をimportする
 
 ```typescript
 // hero-editor.interfaces.ts
@@ -67,6 +82,15 @@ export interface Editting {
   };
 }
 
+export interface EditFinish {
+  type: 'EDIT_FINISHD';
+  payload: {
+    name: string;
+    editing: boolean;
+    new: boolean;
+  };
+}
+
 export interface Complite {
   type: 'COMPLITE';
   payload: {
@@ -94,33 +118,6 @@ export interface Complite {
     }
   });
 
-  @Effect()
-  EditFinish = this.d.fetch('EDIT_FINISHD', {
-    run: (a: EditFinish, state: HeroEditorState) => {
-
-      this.heroList.dispatch({
-        type: 'EDIT_DATA',
-        payload: {
-          helo: {
-            id: state.heroEditor.id,
-            name: a.payload.name,
-          }
-        }
-      });
-
-      return {
-        type: 'COMPLITE',
-        payload: {
-          editing: false,
-        }
-      };
-    },
-
-    onError: (a: EditFinish, error) => {
-      console.error('Error', error);
-    }
-  });
-
 
 // hero-editor.reducer.ts
   switch (action.type) {
@@ -143,22 +140,6 @@ export interface Complite {
 
 編集結果をcomponentにbindする
 
-```html
-<!-- heros.component.html -->
-<div *ngIf="editing$ | async">
-  <p>
-    名前を変えたり、新しく追加できたり
-  </p>
-
-  <label>Name:
-    <input type="text" [value]="name$ | async" #heroName>
-  </label>
-
-  <button (click)="onEditComplite(heroName.value)">更新</button>
-</div>
-
-```
-
 ```typescript
 //hero-detail.component.ts
 export class HeroDetailComponent implements OnInit {
@@ -179,11 +160,21 @@ export class HeroDetailComponent implements OnInit {
     this.heroEditor.dispatch({ type: 'EDIT_FINISHD', payload: { name: name} });
   }
 }
-
-
 ```
 
-編集が終わったら自分の状態を初期化して、`heloList`の該当データを更新できるようにする。
+```html
+<!-- hero-detail.component.html -->
+<!-- a-ngIf でショートカット -->
+<div *ngIf="editing$ | async">
+  <mat-form-field>
+    <input matInput placeholder="おなまえ" [value]="name$ | async" #heroName>
+  </mat-form-field>
+  <button mat-raised-button (click)="onEditComplite(heroName.value)" color="primary">更新</button>
+</div>
+  
+```
+
+次に、編集完了アクションと、`heroList`側の`EDIT_DATA`アクション以降を定義する。
 
 
 ```typescript
@@ -252,13 +243,15 @@ export interface DataEdited {
     }
   });
 
-    // hero-list.reducer.ts
-    case 'DATA_EDITED': {
-      let index = state.heros.findIndex(v => v.id === action.payload.helo.id);
-      state.heros[index].name = action.payload.helo.name;
-      return state;
-    }
+// hero-list.reducer.ts
+case 'DATA_EDITED': {
+  let index = state.heros.findIndex(v => v.id === action.payload.helo.id);
+  state.heros[index].name = action.payload.helo.name;
+  return state;
+}
 
 ```
 
 データが更新されるので画面に反映される
+
+### [hero登録へ](./create.html)

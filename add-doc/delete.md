@@ -9,7 +9,7 @@ heloに削除ボタンを追加して削除できるようにする
 `helos`コンポーネントに削除ボタンと対応イベントを追加する。
 
 ```typescript
-
+// heros.component.ts
   onDelete(id: number) {
     this.heloList.dispatch({
       type: 'DELETE_DATA',
@@ -18,6 +18,11 @@ heloに削除ボタンを追加して削除できるようにする
       }
     });
   }
+```
+
+```html
+<!-- heros.component.html -->
+    <button mat-raised-button (click)="onDelete(hero.id)" color="primary">削除</button>
 ```
 
 `helo-list`モジュール
@@ -37,6 +42,7 @@ export interface DataDeleted {
     id: number;
   };
 }
+
 // hero-list.effects.ts
   @Effect()
   DeleteData = this.d.fetch('DELETE_DATA', {

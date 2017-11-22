@@ -1,0 +1,11 @@
+<button mat-raised-button (click)="onNewHero()" color="primary">新規登録</button>
+<mat-list>
+  <h3 mat-subheader>Heros</h3>
+  <mat-list-item *ngFor="let hero of heros$ | async">
+    <button mat-raised-button (click)="onEdit(hero)" color="primary">編集</button>
+
+    <button mat-raised-button (click)="onDelete(hero.id)" color="primary">削除</button>
+    
+    <h4 mat-line>{{hero.name}}</h4>
+  </mat-list-item>
+</mat-list>

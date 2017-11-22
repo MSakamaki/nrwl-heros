@@ -3,15 +3,19 @@
 
 新規追加ボタンを追加して追加できるようにする
 
-`HerosModule`モジュールの画面によしなに新規ボタンを追加する。イベントは以下の感じ。
+`HerosModule`モジュールの画面によしなに新規ボタンを追加する。
+
+```html
+<!-- heros.component.html -->
+<button mat-raised-button (click)="onNewHero()" color="primary">新規登録</button>
+```
+
+イベントは以下の感じ。
 
 ```typescript
 
 // hero-detail.component.ts
-  constructor(
-    private heroEditor: Store<HeroEditorState>) { }
-
-  onNewHelo() {
+  onNewHero() {
     this.heroEditor.dispatch({
       type: 'ADD_START'
     });
@@ -19,6 +23,11 @@
 
 
 // hero-editor.actions.ts
+
+export interface AddStart {
+  type: 'ADD_START';
+  payload: {};
+}
 
 export interface Adding {
   type: 'ADDING';
@@ -142,23 +151,25 @@ export interface DataAdded {
 
 ```
 
-`heroList`にデータが追加されるので画面のほうは動いてくれる。
+`hero-detail`に登録完了ボタンを追加し、新規と編集で違うイベントにする。
 
-uiを以下のようにするとそれっぽくなる
+```typescript
+// hero-detail.component.ts
+  onAdd(name) {
+    this.heroEditor.dispatch({ type: 'ADD_FINISHD', payload: { name: name } });
+  }
+```
 
 ```html
 <!-- hero-detail.component.html -->
 <div *ngIf="editing$ | async">
-  <p>
-    名前を変えたり、新しく追加できたり
-  </p>
-
-  <label>Name:
-    <input type="text" [value]="name$ | async" #heroName>
-  </label>
-
-  <button *ngIf="!(new$ | async)" (click)="onEditComplite(heroName.value)">更新</button>
-  <button *ngIf="new$ | async" (click)="onAdd(heroName.value)">追加</button>
+  <mat-form-field>
+    <input matInput placeholder="おなまえ" [value]="name$ | async" #heroName>
+  </mat-form-field>
+  <button mat-raised-button *ngIf="!(new$ | async)" (click)="onEditComplite(heroName.value)" color="primary">更新</button>
+  <button mat-raised-button *ngIf="new$ | async" (click)="onAdd(heroName.value)" color="primary">登録</button>
 </div>
-
 ```
+
+`heroList`にデータが追加されるので画面のほうは動いてくれる。
+
