@@ -13,6 +13,7 @@
   "exclude": [
     "**/*.spec.ts",
     "**/*.e2e-spec.ts",
+    "mock/**/*",
     "node_modules",
     "tmp"
   ]
