@@ -23,6 +23,11 @@ npm install
 
 # 開発準備(APIサーバーとかキャッシュの無いchromeを立ち上げる)
 npm run dev.start
+# windowsで動かない人は以下のコマンドを個別のプロンプトで実行する
+npm run pm2.kill
+npm run doc && npm run doc.start
+npm run mock.start
+start chrome --user-data-dir=c:/tmp/nrwl-sample --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:4200 "http://127.0.0.1:8080/"
 
 # 資料を見る方法(資料更新)
 npm run doc
