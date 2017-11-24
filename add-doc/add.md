@@ -29,15 +29,6 @@ export interface AddStart {
   payload: {};
 }
 
-export interface Adding {
-  type: 'ADDING';
-  payload: {
-    id: number;
-    name: string;
-    editing: boolean;
-    new: boolean;
-  };
-}
 
 export interface AddFinish {
   type: 'ADD_FINISHD';
@@ -53,7 +44,7 @@ export interface AddFinish {
   AddStart = this.d.fetch('ADD_START', {
     run: (a: EditStart, state: HeroEditorState) => {
       return {
-        type: 'ADDING',
+        type: 'EDITTING',
         payload: {
           id: null,
           name: '',
@@ -98,9 +89,6 @@ export interface AddFinish {
     case 'ADD_START': {
       return { ...state, ...action.payload };
     }
-    case 'ADDING': {
-      return { ...state, ...action.payload };
-    }
 
 ```
 
@@ -115,33 +103,9 @@ export interface AddData {
   };
 }
 
-export interface DataAdded {
-  type: 'DATA_ADDED';
-  payload: {
-    name: string;
-  };
-}
-
-// hero-list.effects.ts
-  @Effect()
-  AddData = this.d.fetch('ADD_DATA', {
-    run: (a: AddData, state: HeroListState) => {
-      return {
-        type: 'DATA_ADDED',
-        payload: {
-          name: a.payload.name
-        }
-      };
-    },
-
-    onError: (a: AddData, error) => {
-      console.error('Error', error);
-    }
-  });
-
 // hero-list.reducer.ts
 // reducerでデータを追加する。
-    case 'DATA_ADDED': {
+    case 'ADD_DATA': {
       state.heros.push({
         id: Reflect.apply(Math.max, void 0, state.heros.map(hero=> hero.id)) + 1,
         name: action.payload.name,

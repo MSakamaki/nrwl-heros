@@ -219,32 +219,10 @@ export interface EditData {
     helo: Hero;
   };
 }
-export interface DataEdited {
-  type: 'DATA_EDITED';
-  payload: {
-    helo: Hero;
-  };
-}
 
-// hero-list.effects.ts
-  @Effect()
-  EditData = this.d.fetch('EDIT_DATA', {
-    run: (a: EditData, state: HeroListState) => {
-      return {
-        type: 'DATA_EDITED',
-        payload: {
-          helo: a.payload.helo
-        }
-      };
-    },
-
-    onError: (a: EditData, error) => {
-      console.error('Error', error);
-    }
-  });
 
 // hero-list.reducer.ts
-case 'DATA_EDITED': {
+case 'EDIT_DATA': {
   let index = state.heros.findIndex(v => v.id === action.payload.helo.id);
   state.heros[index].name = action.payload.helo.name;
   return state;
