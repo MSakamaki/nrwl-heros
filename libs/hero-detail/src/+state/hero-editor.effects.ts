@@ -62,7 +62,7 @@ export class HeroEditorEffects {
   AddStart = this.d.fetch('ADD_START', {
     run: (a: EditStart, state: HeroEditorState) => {
       return {
-        type: 'ADDING',
+        type: 'EDITTING',
         payload: {
           id: null,
           name: '',

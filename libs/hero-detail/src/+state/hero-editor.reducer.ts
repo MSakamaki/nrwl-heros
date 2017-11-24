@@ -13,9 +13,6 @@ export function heroEditorReducer(state: HeroEditor, action: HeroEditorAction): 
     case 'ADD_START': {
       return { ...state, ...action.payload };
     }
-    case 'ADDING': {
-      return { ...state, ...action.payload };
-    }
     case 'COMPLITE': {
       // 編集が終わったら自分の状態は初期化
       return heroEditorInitialState;

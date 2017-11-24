@@ -6,19 +6,19 @@ export function heroListReducer(state: HeroList, action: HeroListAction): HeroLi
     case 'DATA_LOADED': {
       return { ...state, ...action.payload };
     }
-    case 'DATA_EDITED': {
+    case 'EDIT_DATA': {
       let index = state.heros.findIndex(v => v.id === action.payload.helo.id);
       state.heros[index].name = action.payload.helo.name;
       return state;
     }
-    case 'DATA_ADDED': {
+    case 'ADD_DATA': {
       state.heros.push({
         id: Reflect.apply(Math.max, void 0, state.heros.map(hero => hero.id)) + 1,
         name: action.payload.name,
       });
       return state;
     }
-    case 'DATA_DELETED': {
+    case 'DELETE_DATA': {
       state.heros = state.heros.filter(helo => helo.id !== action.payload.id);
       return state;
     }

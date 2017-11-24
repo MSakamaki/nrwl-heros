@@ -40,16 +40,6 @@ export interface AddStart {
   payload: {};
 }
 
-export interface Adding {
-  type: 'ADDING';
-  payload: {
-    id: number;
-    name: string;
-    editing: boolean;
-    new: boolean;
-  };
-}
-
 export interface AddFinish {
   type: 'ADD_FINISHD';
   payload: {
@@ -59,4 +49,4 @@ export interface AddFinish {
   };
 }
 
-export type HeroEditorAction = EditStart | Editting | Complite | AddStart | Adding | AddFinish;
+export type HeroEditorAction = EditStart | Editting | Complite | AddStart | AddFinish;

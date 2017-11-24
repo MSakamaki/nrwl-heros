@@ -17,22 +17,9 @@ export interface EditData {
     helo: Hero;
   };
 }
-export interface DataEdited {
-  type: 'DATA_EDITED';
-  payload: {
-    helo: Hero;
-  };
-}
 
 export interface AddData {
   type: 'ADD_DATA';
-  payload: {
-    name: string;
-  };
-}
-
-export interface DataAdded {
-  type: 'DATA_ADDED';
   payload: {
     name: string;
   };
@@ -45,12 +32,4 @@ export interface DeleteData {
   };
 }
 
-export interface DataDeleted {
-  type: 'DATA_DELETED';
-  payload: {
-    id: number;
-  };
-}
-
-
-export type HeroListAction = LoadData | DataLoaded | EditData | DataEdited | AddData | DataAdded | DeleteData | DataDeleted;
+export type HeroListAction = LoadData | DataLoaded | EditData  | AddData | DeleteData;
