@@ -4,22 +4,17 @@ import { DataPersistence } from '@nrwl/nx';
 import { of } from 'rxjs/observable/of';
 import 'rxjs/add/operator/switchMap';
 import { HeroListState } from './hero-list.interfaces';
-import { LoadData, DataLoaded, EditData, AddData, DeleteData } from './hero-list.actions';
-import { HttpClient } from '@angular/common/http';
-import 'rxjs/add/operator/map';
+import { LoadData, DataLoaded } from './hero-list.actions';
 
 @Injectable()
 export class HeroListEffects {
-
   @Effect()
   loadData = this.d.fetch('LOAD_DATA', {
     run: (a: LoadData, state: HeroListState) => {
-      return this.http.get('api/users').map(heros => ({
+      return {
         type: 'DATA_LOADED',
-        payload: {
-          heros: heros
-        }
-      }));
+        payload: {}
+      };
     },
 
     onError: (a: LoadData, error) => {
@@ -27,5 +22,5 @@ export class HeroListEffects {
     }
   });
 
-  constructor(private http: HttpClient, private actions: Actions, private d: DataPersistence<HeroListState>) {}
+  constructor(private actions: Actions, private d: DataPersistence<HeroListState>) {}
 }

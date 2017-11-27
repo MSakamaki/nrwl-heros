@@ -5,12 +5,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { heroListReducer } from './+state/hero-list.reducer';
 import { heroListInitialState } from './+state/hero-list.init';
 import { HeroListEffects } from './+state/hero-list.effects';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule,
     StoreModule.forFeature('heroList', heroListReducer, { initialState: heroListInitialState }),
     EffectsModule.forFeature([HeroListEffects])
   ],

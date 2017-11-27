@@ -1,7 +1,3 @@
-<div *ngIf="editing$ | async">
-  <mat-form-field>
-    <input matInput placeholder="おなまえ" [value]="name$ | async" #heroName>
-  </mat-form-field>
-  <button mat-raised-button *ngIf="!(new$ | async)" (click)="onEditComplite(heroName.value)" color="primary">更新</button>
-  <button mat-raised-button *ngIf="new$ | async" (click)="onAdd(heroName.value)" color="primary">登録</button>
-</div>
+<p>
+  hero-detail works!
+</p>
